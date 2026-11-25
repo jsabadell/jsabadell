@@ -28,65 +28,82 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 
 /* ------------------------------------------------------------------ header */
 function header() {
-  const W = 860, H = 322, x0 = 32, lh = 27, fs = 15, cw = 9.05;
-  const prompt = [{ t: "jordi", c: "#a3e635" }, { t: "@", c: "#8aa293" }, { t: "bcn", c: "#2dd4bf" }, { t: ":~$ ", c: "#8aa293" }];
-  const promptLen = prompt.reduce((n, p) => n + p.t.length, 0);
-  const steps = [
-    { cmd: "whoami", out: [[{ t: "Jordi", c: "#e6efe8", b: 1 }, { t: " · full-stack software engineer", c: "#c9d6cd" }]] },
-    { cmd: "cat stack.txt", out: [[{ t: "typescript · react · next.js · fastapi · postgres · supabase", c: "#f59e0b" }]] },
-    { cmd: "traceroute jordi", out: [[
-      { t: "brazil", c: "#a3e635" }, { t: " (roots) ", c: "#5f7568" }, { t: "──▶ ", c: "#5f7568" },
-      { t: "netherlands", c: "#f59e0b" }, { t: " (fontys) ", c: "#5f7568" }, { t: "──▶ ", c: "#5f7568" },
-      { t: "barcelona", c: "#fb7185" }, { t: " (home base)", c: "#5f7568" },
-    ]] },
-    { cmd: "./status --now", out: [[{ t: "shipping AI assistants, a MES and a football network", c: "#2dd4bf" }]] },
+  const W = 860, H = 300;
+  // rotating "currently building ..." line, typed letter by letter
+  const prefix = "Currently building ";
+  const phrases = [
+    { t: "AI assistants over live data", c: "#a3e635" },
+    { t: "a manufacturing execution system", c: "#f59e0b" },
+    { t: "a professional network for football", c: "#fb7185" },
   ];
-  let y = 78, t = 0.6, body = "", defs = "", id = 0;
-  const spans = (parts) => parts.map((p) => `<tspan fill="${p.c}"${p.b ? ' font-weight="700"' : ""}>${esc(p.t)}</tspan>`).join("");
-  for (const s of steps) {
-    const n = s.cmd.length, dur = n * 0.07;
-    const vals = Array.from({ length: n + 1 }, (_, k) => ((promptLen + k) * cw).toFixed(1)).join(";");
-    defs += `<clipPath id="c${id}"><rect x="${x0}" y="${y - 20}" height="30" width="${(promptLen * cw).toFixed(1)}">
-      <animate attributeName="width" begin="${t.toFixed(2)}s" dur="${dur.toFixed(2)}s" values="${vals}" calcMode="discrete" fill="freeze"/></rect></clipPath>`;
-    body += `<g opacity="0"><set attributeName="opacity" to="1" begin="${(t - 0.01).toFixed(2)}s" fill="freeze"/>
-      <text x="${x0}" y="${y}" clip-path="url(#c${id})">${spans(prompt)}<tspan fill="#e6efe8">${esc(s.cmd)}</tspan></text></g>`;
-    t += dur + 0.35; y += lh;
-    for (const line of s.out) {
-      body += `<g opacity="0"><set attributeName="opacity" to="1" begin="${t.toFixed(2)}s" fill="freeze"/>
-        <text x="${x0}" y="${y}">${spans(line)}</text></g>`;
-      y += lh;
-    }
-    t += 0.45; id++;
-  }
-  // final prompt + blinking cursor
-  body += `<g opacity="0"><set attributeName="opacity" to="1" begin="${t.toFixed(2)}s" fill="freeze"/>
-    <text x="${x0}" y="${y}">${spans(prompt)}</text>
-    <rect x="${x0 + promptLen * cw + 2}" y="${y - 14}" width="9" height="18" fill="#a3e635">
-      <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.5;1" dur="1s" repeatCount="indefinite"/></rect></g>`;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="${MONO}" font-size="${fs}">
+  const slot = 4.2, cycle = slot * phrases.length, cw = 9.6, px = 56, py = 172;
+  const startX = px + prefix.length * cw;
+  let rot = "", defs = "";
+  phrases.forEach((p, i) => {
+    const n = p.t.length, t0 = i * slot, typeDur = n * 0.045, hold = slot - 0.5;
+    const times = [0], vals = [0];
+    for (let k = 1; k <= n; k++) { times.push(t0 + (k / n) * typeDur); vals.push(k * cw + 2); }
+    times.push(t0 + hold); vals.push(0);
+    if (t0 > 0) { times.splice(1, 0, t0); vals.splice(1, 0, 0); }
+    const kt = times.map((x) => (x / cycle).toFixed(4));
+    if (kt[kt.length - 1] !== "1.0000") { kt.push("1"); vals.push(0); }
+    defs += `<clipPath id="r${i}"><rect x="${startX}" y="${py - 20}" height="30" width="0">
+      <animate attributeName="width" dur="${cycle}s" repeatCount="indefinite" calcMode="discrete" keyTimes="${kt.join(";")}" values="${vals.join(";")}"/></rect></clipPath>`;
+    rot += `<text x="${startX}" y="${py}" fill="${p.c}" clip-path="url(#r${i})">${esc(p.t)}</text>`;
+  });
+  // route: three stops joined by a line with a travelling dot
+  const stops = [
+    { name: "Brazil", note: "roots", c: "#a3e635" },
+    { name: "Netherlands", note: "Fontys, Software Engineering", c: "#f59e0b" },
+    { name: "Barcelona", note: "home base", c: "#fb7185" },
+  ];
+  const ry = 232, rx0 = px + 6, rgap = 230;
+  let route = `<path d="M${rx0} ${ry} H${rx0 + 2 * rgap}" stroke="#2a3a30" stroke-width="2" stroke-dasharray="3 5"/>
+    <circle r="3.5" fill="#e6efe8"><animate attributeName="cx" values="${rx0};${rx0 + 2 * rgap}" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="5s" repeatCount="indefinite"/><set attributeName="cy" to="${ry}"/></circle>`;
+  stops.forEach((s, i) => {
+    const x = rx0 + i * rgap;
+    route += `<circle cx="${x}" cy="${ry}" r="9" fill="${s.c}" opacity=".18"/><circle cx="${x}" cy="${ry}" r="5" fill="${s.c}"/>
+      <text x="${x - 6}" y="${ry + 30}" font-family="${SANS}" font-size="15" font-weight="700" fill="#e6efe8">${s.name}</text>
+      <text x="${x - 6}" y="${ry + 49}" font-family="${SANS}" font-size="12.5" fill="#7d9586">${esc(s.note)}</text>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>${defs}
-    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3e635" stop-opacity=".18"/><stop offset=".5" stop-color="#2dd4bf" stop-opacity=".06"/><stop offset="1" stop-color="#fb7185" stop-opacity=".14"/></linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3e635" stop-opacity=".35"/><stop offset=".55" stop-color="#2dd4bf" stop-opacity=".08"/><stop offset="1" stop-color="#fb7185" stop-opacity=".3"/></linearGradient>
+    <radialGradient id="blob" cx="85%" cy="20%" r="55%"><stop offset="0" stop-color="#a3e635" stop-opacity=".16"/><stop offset="1" stop-color="#a3e635" stop-opacity="0"/></radialGradient>
+    <style>
+      .skin{animation:cham 8s ease-in-out infinite}.leg{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:chamS 8s ease-in-out infinite}
+      @keyframes cham{0%,100%{fill:#a3e635}33%{fill:#2dd4bf}66%{fill:#f59e0b}}@keyframes chamS{0%,100%{stroke:#a3e635}33%{stroke:#2dd4bf}66%{stroke:#f59e0b}}
+      .spot{fill:#1a2e05;opacity:.4}.legA,.legB{animation:none}
+      .tongue{fill:none;stroke:#fb7185;stroke-width:1.4;stroke-linecap:round;transform-origin:6px 0;animation:flick 2.6s ease-out infinite}
+      @keyframes flick{0%,80%{transform:scaleX(0)}88%{transform:scaleX(1)}96%,100%{transform:scaleX(0)}}
+      .bob{animation:bob 3.2s ease-in-out infinite}@keyframes bob{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-4px)}}
+      .cur{animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+    </style>
   </defs>
-  <rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="14" fill="#0b100d" stroke="url(#glow)" stroke-width="2"/>
-  <rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="14" fill="url(#glow)" opacity=".35"/>
-  <path d="M1 44 H${W - 1}" stroke="#1d2a22"/>
-  <circle cx="26" cy="23" r="5.5" fill="#fb7185"/><circle cx="44" cy="23" r="5.5" fill="#f59e0b"/><circle cx="62" cy="23" r="5.5" fill="#a3e635"/>
-  <text x="${W / 2}" y="28" text-anchor="middle" fill="#5f7568" font-size="13">jordi@bcn — zsh — 120×32</text>
-  ${body}
+  <rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="18" fill="#0b100d"/>
+  <rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="18" fill="url(#blob)"/>
+  <rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="18" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+  <text x="${px}" y="96" font-family="${SANS}" font-size="50" font-weight="800" fill="#f1f7f2" letter-spacing="-1.2">Jordi Sabadell</text>
+  <text x="${px + 2}" y="130" font-family="${SANS}" font-size="19" fill="#9fb5a7">Full-stack software engineer</text>
+  <g font-family="${MONO}" font-size="16">
+    <text x="${px}" y="${py}" fill="#6f8578">${prefix}</text>${rot}
+  </g>
+  ${route}
+  <g transform="translate(735 150) rotate(-30) scale(3.1)"><g class="bob">${lizard()}</g></g>
 </svg>`;
 }
 
 /* ---------------------------------------------------------------- projects */
 const PROJECTS = [
-  { slug: "~/irko", name: "IRKO", kind: "internship · AI", color: "accent",
+  { name: "IRKO", kind: "Internship · AI", color: "accent",
     lines: ["Natural-language assistant over an", "automation portal: ask a question,", "get answers from live dashboard data."],
     tags: ["LLM agents", "Python", "Postgres"] },
-  { slug: "~/stadio", name: "Stadio", kind: "contract · full-stack", color: "accent2",
-    lines: ["Professional network for football:", "players, clubs and scouts. Led security", "hardening — 6 vulnerabilities closed."],
+  { name: "Stadio", kind: "Contract · Full-stack", color: "accent2",
+    lines: ["Professional network for football:", "players, clubs and scouts. Led security", "hardening and closed 6 vulnerabilities."],
     tags: ["TypeScript", "Next.js", "Supabase"] },
-  { slug: "~/creme", name: "Creme Climbing", kind: "contract · full-stack", color: "accent3",
-    lines: ["Manufacturing execution system: from", "production orders to the shop floor,", "end to end."],
+  { name: "Creme Climbing", kind: "Contract · Full-stack", color: "accent3",
+    lines: ["Manufacturing execution system: from", "production orders all the way to the", "shop floor."],
     tags: ["React", "FastAPI", "PostgreSQL"] },
 ];
 function chips(tags, x, y, th, mono = true) {
@@ -107,8 +124,7 @@ function projects(th) {
     out += `<g>
       <rect x="${x + 1}" y="1" width="${cw - 2}" height="${H - 2}" rx="12" fill="${th.surface}" stroke="${th.border}"/>
       <rect x="${x + 1}" y="1" width="${cw - 2}" height="4" rx="2" fill="${c}"/>
-      <text x="${x + 18}" y="32" font-family="${MONO}" font-size="12" fill="${c}">${p.slug}</text>
-      <text x="${x + cw - 18}" y="32" text-anchor="end" font-family="${MONO}" font-size="11" fill="${th.muted}">${p.kind}</text>
+      <text x="${x + 18}" y="32" font-family="${MONO}" font-size="12" fill="${c}">${p.kind}</text>
       <text x="${x + 18}" y="62" font-family="${SANS}" font-size="20" font-weight="700" fill="${th.text}">${esc(p.name)}</text>
       ${p.lines.map((l, k) => `<text x="${x + 18}" y="${90 + k * 19}" font-family="${SANS}" font-size="13" fill="${th.muted}">${esc(l)}</text>`).join("")}
       ${chips(p.tags, x + 18, H - 40, th)}
@@ -119,10 +135,10 @@ function projects(th) {
 
 /* ------------------------------------------------------------------- stack */
 const STACK = [
-  { title: "frontend", color: "accent4", items: ["TypeScript", "React", "Next.js", "React Native", "Tailwind"] },
-  { title: "backend", color: "accent2", items: ["FastAPI", "Python", "Node.js", "REST", "LLM agents"] },
-  { title: "data", color: "accent", items: ["PostgreSQL", "Supabase", "SQL", "RLS & auth"] },
-  { title: "ship", color: "accent3", items: ["Docker", "GitHub Actions", "CI/CD", "Linux"] },
+  { title: "Frontend", color: "accent4", items: ["TypeScript", "React", "Next.js", "React Native", "Tailwind"] },
+  { title: "Backend", color: "accent2", items: ["FastAPI", "Python", "Node.js", "REST", "LLM agents"] },
+  { title: "Data", color: "accent", items: ["PostgreSQL", "Supabase", "SQL", "RLS & auth"] },
+  { title: "DevOps", color: "accent3", items: ["Docker", "GitHub Actions", "CI/CD", "Linux"] },
 ];
 function stack(th) {
   const W = 860, rowH = 40, H = STACK.length * rowH + 12;
@@ -130,7 +146,7 @@ function stack(th) {
   STACK.forEach((g, i) => {
     const y = 6 + i * rowH;
     out += `<circle cx="10" cy="${y + 16}" r="4" fill="${th[g.color]}"/>
-      <text x="24" y="${y + 21}" font-family="${MONO}" font-size="14" fill="${th[g.color]}">${g.title}/</text>
+      <text x="24" y="${y + 21}" font-family="${MONO}" font-size="14" fill="${th[g.color]}">${g.title}</text>
       ${chips(g.items, 130, y + 5, th)}`;
     if (i < STACK.length - 1) out += `<path d="M24 ${y + rowH - 1} H${W}" stroke="${th.border}" stroke-dasharray="2 4"/>`;
   });
@@ -141,7 +157,7 @@ function stack(th) {
 async function gql(query, variables) {
   const r = await fetch("https://api.github.com/graphql", {
     method: "POST",
-    headers: { Authorization: `bearer ${process.env.GITHUB_TOKEN}`, "Content-Type": "application/json" },
+    headers: { Authorization: `bearer ${(process.env.PROFILE_TOKEN || process.env.GITHUB_TOKEN)}`, "Content-Type": "application/json" },
     body: JSON.stringify({ query, variables }),
   });
   const j = await r.json();
@@ -196,7 +212,7 @@ function streaks(allDays) {
 }
 
 /* ------------------------------------------------------------------- stats */
-const fmtDate = (s) => s ? new Date(s + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : "—";
+const fmtDate = (s) => s ? new Date(s + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : "";
 const fmtN = (n) => n.toLocaleString("en-US");
 function stats(th, data) {
   const W = 860, H = 196, gap = 14, tw = (W - 3 * gap) / 4;
@@ -204,10 +220,10 @@ function stats(th, data) {
   const st = streaks(data.allDays);
   const firstYear = data.allDays.length ? data.allDays[0][0].slice(0, 4) : "";
   const tiles = [
-    { label: "all-time", value: fmtN(all), sub: `contributions since ${firstYear}`, c: th.accent },
-    { label: "last 12 months", value: fmtN(data.yearTotal), sub: "commits · PRs · reviews", c: th.accent4 },
-    { label: "current streak", value: `${st.current.n}d`, sub: st.current.n ? `${fmtDate(st.current.from)} → ${fmtDate(st.current.to)}` : "starting a new one", c: th.accent2 },
-    { label: "longest streak", value: `${st.longest.n}d`, sub: st.longest.n ? `${fmtDate(st.longest.from)} → ${fmtDate(st.longest.to)}` : "—", c: th.accent3 },
+    { label: "All-time", value: fmtN(all), sub: `contributions since ${firstYear}`, c: th.accent },
+    { label: "Last 12 months", value: fmtN(data.yearTotal), sub: "commits, PRs and reviews", c: th.accent4 },
+    { label: "Current streak", value: `${st.current.n}d`, sub: st.current.n ? `${fmtDate(st.current.from)} → ${fmtDate(st.current.to)}` : "starting a new one today", c: th.accent2 },
+    { label: "Longest streak", value: `${st.longest.n}d`, sub: st.longest.n ? `${fmtDate(st.longest.from)} → ${fmtDate(st.longest.to)}` : "", c: th.accent3 },
   ];
   let out = "";
   tiles.forEach((t, i) => {
@@ -220,7 +236,7 @@ function stats(th, data) {
   // weekly bars
   const wk = data.weeks.map((w) => w.reduce((s, d) => s + d.count, 0));
   const max = Math.max(1, ...wk), bw = (W - 2) / wk.length, top = 122, bh = 54;
-  out += `<text x="0" y="${top - 2}" font-family="${MONO}" font-size="11" fill="${th.muted}">contributions / week</text>`;
+  out += `<text x="0" y="${top - 2}" font-family="${MONO}" font-size="11" fill="${th.muted}">Contributions per week</text>`;
   wk.forEach((v, i) => {
     const h = Math.max(2, (v / max) * (bh - 8));
     out += `<rect x="${(1 + i * bw + 1).toFixed(1)}" y="${(top + bh - h).toFixed(1)}" width="${(bw - 3).toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="${th.accent}" opacity="${(0.35 + 0.65 * (v / max)).toFixed(2)}"/>`;
@@ -314,7 +330,7 @@ for (const [name, th] of Object.entries(THEMES)) {
   save(`projects-${name}.svg`, projects(th));
   save(`stack-${name}.svg`, stack(th));
 }
-if (mock || process.env.GITHUB_TOKEN) {
+if (mock || (process.env.PROFILE_TOKEN || process.env.GITHUB_TOKEN)) {
   const data = mock ? mockData() : await realData();
   for (const [name, th] of Object.entries(THEMES)) {
     save(`stats-${name}.svg`, stats(th, data));

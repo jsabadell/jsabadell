@@ -1,26 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="860" height="322" viewBox="0 0 860 322" font-family="ui-monospace,'JetBrains Mono','Cascadia Code','Fira Code',SFMono-Regular,Menlo,Consolas,monospace" font-size="15">
-  <defs><clipPath id="c0"><rect x="32" y="58" height="30" width="117.7">
-      <animate attributeName="width" begin="0.60s" dur="0.42s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0" calcMode="discrete" fill="freeze"/></rect></clipPath><clipPath id="c1"><rect x="32" y="112" height="30" width="117.7">
-      <animate attributeName="width" begin="1.82s" dur="0.91s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0;181.0;190.1;199.1;208.2;217.2;226.3;235.3" calcMode="discrete" fill="freeze"/></rect></clipPath><clipPath id="c2"><rect x="32" y="166" height="30" width="117.7">
-      <animate attributeName="width" begin="3.53s" dur="1.12s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0;181.0;190.1;199.1;208.2;217.2;226.3;235.3;244.4;253.4;262.5" calcMode="discrete" fill="freeze"/></rect></clipPath><clipPath id="c3"><rect x="32" y="220" height="30" width="117.7">
-      <animate attributeName="width" begin="5.45s" dur="0.98s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0;181.0;190.1;199.1;208.2;217.2;226.3;235.3;244.4" calcMode="discrete" fill="freeze"/></rect></clipPath>
-    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3e635" stop-opacity=".18"/><stop offset=".5" stop-color="#2dd4bf" stop-opacity=".06"/><stop offset="1" stop-color="#fb7185" stop-opacity=".14"/></linearGradient>
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="300" viewBox="0 0 860 300">
+  <defs><clipPath id="r0"><rect x="238.4" y="152" height="30" width="0">
+      <animate attributeName="width" dur="12.600000000000001s" repeatCount="indefinite" calcMode="discrete" keyTimes="0.0000;0.0036;0.0071;0.0107;0.0143;0.0179;0.0214;0.0250;0.0286;0.0321;0.0357;0.0393;0.0429;0.0464;0.0500;0.0536;0.0571;0.0607;0.0643;0.0679;0.0714;0.0750;0.0786;0.0821;0.0857;0.0893;0.0929;0.0964;0.1000;0.2937;1" values="0;11.6;21.2;30.799999999999997;40.4;50;59.599999999999994;69.2;78.8;88.39999999999999;98;107.6;117.19999999999999;126.8;136.4;146;155.6;165.2;174.79999999999998;184.4;194;203.6;213.2;222.79999999999998;232.39999999999998;242;251.6;261.2;270.8;0;0"/></rect></clipPath><clipPath id="r1"><rect x="238.4" y="152" height="30" width="0">
+      <animate attributeName="width" dur="12.600000000000001s" repeatCount="indefinite" calcMode="discrete" keyTimes="0.0000;0.3333;0.3369;0.3405;0.3440;0.3476;0.3512;0.3548;0.3583;0.3619;0.3655;0.3690;0.3726;0.3762;0.3798;0.3833;0.3869;0.3905;0.3940;0.3976;0.4012;0.4048;0.4083;0.4119;0.4155;0.4190;0.4226;0.4262;0.4298;0.4333;0.4369;0.4405;0.4440;0.4476;0.6270;1" values="0;0;11.6;21.2;30.799999999999997;40.4;50;59.599999999999994;69.2;78.8;88.39999999999999;98;107.6;117.19999999999999;126.8;136.4;146;155.6;165.2;174.79999999999998;184.4;194;203.6;213.2;222.79999999999998;232.39999999999998;242;251.6;261.2;270.8;280.4;290;299.59999999999997;309.2;0;0"/></rect></clipPath><clipPath id="r2"><rect x="238.4" y="152" height="30" width="0">
+      <animate attributeName="width" dur="12.600000000000001s" repeatCount="indefinite" calcMode="discrete" keyTimes="0.0000;0.6667;0.6702;0.6738;0.6774;0.6810;0.6845;0.6881;0.6917;0.6952;0.6988;0.7024;0.7060;0.7095;0.7131;0.7167;0.7202;0.7238;0.7274;0.7310;0.7345;0.7381;0.7417;0.7452;0.7488;0.7524;0.7560;0.7595;0.7631;0.7667;0.7702;0.7738;0.7774;0.7810;0.7845;0.7881;0.7917;0.9603;1" values="0;0;11.6;21.2;30.799999999999997;40.4;50;59.599999999999994;69.2;78.8;88.39999999999999;98;107.6;117.19999999999999;126.8;136.4;146;155.6;165.2;174.79999999999998;184.4;194;203.6;213.2;222.79999999999998;232.39999999999998;242;251.6;261.2;270.8;280.4;290;299.59999999999997;309.2;318.8;328.4;338;0;0"/></rect></clipPath>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3e635" stop-opacity=".35"/><stop offset=".55" stop-color="#2dd4bf" stop-opacity=".08"/><stop offset="1" stop-color="#fb7185" stop-opacity=".3"/></linearGradient>
+    <radialGradient id="blob" cx="85%" cy="20%" r="55%"><stop offset="0" stop-color="#a3e635" stop-opacity=".16"/><stop offset="1" stop-color="#a3e635" stop-opacity="0"/></radialGradient>
+    <style>
+      .skin{animation:cham 8s ease-in-out infinite}.leg{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:chamS 8s ease-in-out infinite}
+      @keyframes cham{0%,100%{fill:#a3e635}33%{fill:#2dd4bf}66%{fill:#f59e0b}}@keyframes chamS{0%,100%{stroke:#a3e635}33%{stroke:#2dd4bf}66%{stroke:#f59e0b}}
+      .spot{fill:#1a2e05;opacity:.4}.legA,.legB{animation:none}
+      .tongue{fill:none;stroke:#fb7185;stroke-width:1.4;stroke-linecap:round;transform-origin:6px 0;animation:flick 2.6s ease-out infinite}
+      @keyframes flick{0%,80%{transform:scaleX(0)}88%{transform:scaleX(1)}96%,100%{transform:scaleX(0)}}
+      .bob{animation:bob 3.2s ease-in-out infinite}@keyframes bob{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-4px)}}
+      .cur{animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+    </style>
   </defs>
-  <rect x="1" y="1" width="858" height="320" rx="14" fill="#0b100d" stroke="url(#glow)" stroke-width="2"/>
-  <rect x="1" y="1" width="858" height="320" rx="14" fill="url(#glow)" opacity=".35"/>
-  <path d="M1 44 H859" stroke="#1d2a22"/>
-  <circle cx="26" cy="23" r="5.5" fill="#fb7185"/><circle cx="44" cy="23" r="5.5" fill="#f59e0b"/><circle cx="62" cy="23" r="5.5" fill="#a3e635"/>
-  <text x="430" y="28" text-anchor="middle" fill="#5f7568" font-size="13">jordi@bcn — zsh — 120×32</text>
-  <g opacity="0"><set attributeName="opacity" to="1" begin="0.59s" fill="freeze"/>
-      <text x="32" y="78" clip-path="url(#c0)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">whoami</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="1.37s" fill="freeze"/>
-        <text x="32" y="105"><tspan fill="#e6efe8" font-weight="700">Jordi</tspan><tspan fill="#c9d6cd"> · full-stack software engineer</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="1.81s" fill="freeze"/>
-      <text x="32" y="132" clip-path="url(#c1)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">cat stack.txt</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="3.08s" fill="freeze"/>
-        <text x="32" y="159"><tspan fill="#f59e0b">typescript · react · next.js · fastapi · postgres · supabase</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="3.52s" fill="freeze"/>
-      <text x="32" y="186" clip-path="url(#c2)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">traceroute jordi</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="5.00s" fill="freeze"/>
-        <text x="32" y="213"><tspan fill="#a3e635">brazil</tspan><tspan fill="#5f7568"> (roots) </tspan><tspan fill="#5f7568">──▶ </tspan><tspan fill="#f59e0b">netherlands</tspan><tspan fill="#5f7568"> (fontys) </tspan><tspan fill="#5f7568">──▶ </tspan><tspan fill="#fb7185">barcelona</tspan><tspan fill="#5f7568"> (home base)</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="5.44s" fill="freeze"/>
-      <text x="32" y="240" clip-path="url(#c3)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">./status --now</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="6.78s" fill="freeze"/>
-        <text x="32" y="267"><tspan fill="#2dd4bf">shipping AI assistants, a MES and a football network</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="7.23s" fill="freeze"/>
-    <text x="32" y="294"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan></text>
-    <rect x="151.65" y="280" width="9" height="18" fill="#a3e635">
-      <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.5;1" dur="1s" repeatCount="indefinite"/></rect></g>
+  <rect x="1" y="1" width="858" height="298" rx="18" fill="#0b100d"/>
+  <rect x="1" y="1" width="858" height="298" rx="18" fill="url(#blob)"/>
+  <rect x="1" y="1" width="858" height="298" rx="18" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+  <text x="56" y="96" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="50" font-weight="800" fill="#f1f7f2" letter-spacing="-1.2">Jordi Sabadell</text>
+  <text x="58" y="130" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" fill="#9fb5a7">Full-stack software engineer</text>
+  <g font-family="ui-monospace,'JetBrains Mono','Cascadia Code','Fira Code',SFMono-Regular,Menlo,Consolas,monospace" font-size="16">
+    <text x="56" y="172" fill="#6f8578">Currently building </text><text x="238.4" y="172" fill="#a3e635" clip-path="url(#r0)">AI assistants over live data</text><text x="238.4" y="172" fill="#f59e0b" clip-path="url(#r1)">a manufacturing execution system</text><text x="238.4" y="172" fill="#fb7185" clip-path="url(#r2)">a professional network for football</text>
+  </g>
+  <path d="M62 232 H522" stroke="#2a3a30" stroke-width="2" stroke-dasharray="3 5"/>
+    <circle r="3.5" fill="#e6efe8"><animate attributeName="cx" values="62;522" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="5s" repeatCount="indefinite"/><set attributeName="cy" to="232"/></circle><circle cx="62" cy="232" r="9" fill="#a3e635" opacity=".18"/><circle cx="62" cy="232" r="5" fill="#a3e635"/>
+      <text x="56" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Brazil</text>
+      <text x="56" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">roots</text><circle cx="292" cy="232" r="9" fill="#f59e0b" opacity=".18"/><circle cx="292" cy="232" r="5" fill="#f59e0b"/>
+      <text x="286" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Netherlands</text>
+      <text x="286" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">Fontys, Software Engineering</text><circle cx="522" cy="232" r="9" fill="#fb7185" opacity=".18"/><circle cx="522" cy="232" r="5" fill="#fb7185"/>
+      <text x="516" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Barcelona</text>
+      <text x="516" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">home base</text>
+  <g transform="translate(735 150) rotate(-30) scale(3.1)"><g class="bob"><g class="lz" transform="scale(1.35)">
+    <path class="skin" d="M-13,-2.2 Q-24,-3.5 -38,1.5 Q-25,0.8 -13,2.2 Z"/>
+    <g class="legA"><path class="leg" d="M-3,-2.5 L-1,-7.5 L1.5,-8.5"/><path class="leg" d="M-11,2.5 L-14,7.5 L-16.5,8.5"/></g>
+    <g class="legB"><path class="leg" d="M-3,2.5 L-1,7.5 L1.5,8.5"/><path class="leg" d="M-11,-2.5 L-14,-7.5 L-16.5,-8.5"/></g>
+    <ellipse class="skin" cx="-7" cy="0" rx="8.5" ry="4.2"/>
+    <ellipse class="skin" cx="2" cy="0" rx="4.6" ry="3.4"/>
+    <circle cx="-9" cy="-1.3" r="1.1" class="spot"/><circle cx="-5" cy="1.4" r="1" class="spot"/><circle cx="-12" cy="1" r=".9" class="spot"/>
+    <circle cx="3.2" cy="-2.3" r="1.15" fill="#0b100d"/><circle cx="3.2" cy="2.3" r="1.15" fill="#0b100d"/>
+    <path class="tongue" d="M6,0 H13 M13,0 L15.5,-1.6 M13,0 L15.5,1.6"/>
+  </g></g></g>
 </svg>
