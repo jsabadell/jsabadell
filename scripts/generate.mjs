@@ -165,19 +165,47 @@ async function gql(query, variables) {
   return j.data;
 }
 const LEVEL = { NONE: 0, FIRST_QUARTILE: 1, SECOND_QUARTILE: 2, THIRD_QUARTILE: 3, FOURTH_QUARTILE: 4 };
-async function realData() {
-  const cal = `contributionCalendar{ totalContributions weeks{ contributionDays{ date contributionCount contributionLevel } } }`;
-  const d = await gql(`query($l:String!){ user(login:$l){ contributionsCollection{ contributionYears ${cal} } } }`, { l: LOGIN });
-  const cc = d.user.contributionsCollection;
-  const weeks = cc.contributionCalendar.weeks.map((w) => w.contributionDays.map((x) => ({ date: x.date, count: x.contributionCount, level: LEVEL[x.contributionLevel] })));
-  const all = new Map();
-  for (const y of cc.contributionYears) {
-    const r = await gql(`query($l:String!,$f:DateTime!,$t:DateTime!){ user(login:$l){ contributionsCollection(from:$f,to:$t){ ${cal} } } }`,
-      { l: LOGIN, f: `${y}-01-01T00:00:00Z`, t: `${y}-12-31T23:59:59Z` });
-    for (const w of r.user.contributionsCollection.contributionCalendar.weeks)
-      for (const x of w.contributionDays) all.set(x.date, x.contributionCount);
+// The public calendar page is what the profile itself renders, so it already
+// includes private contributions (when that profile setting is on).
+async function scrapeRange(from, to) {
+  const url = `https://github.com/users/${LOGIN}/contributions` + (from ? `?from=${from}&to=${to}` : "");
+  const r = await fetch(url, { headers: { "User-Agent": "profile-assets", Accept: "text/html" } });
+  if (!r.ok) throw new Error(`calendar ${r.status}`);
+  const html = await r.text();
+  const tips = new Map();
+  for (const m of html.matchAll(/<tool-tip\b[^>]*\bfor="([^"]+)"[^>]*>([^<]*)</g)) {
+    const n = m[2].trim().match(/^([\d,]+)\s+contribution/);
+    tips.set(m[1], n ? Number(n[1].replace(/,/g, "")) : 0);
   }
-  return { weeks, yearTotal: cc.contributionCalendar.totalContributions, allDays: [...all.entries()].sort() };
+  const days = [];
+  for (const m of html.matchAll(/<td\b[^>]*\bdata-date="[^"]+"[^>]*>/g)) {
+    const tag = m[0], attr = (k) => (tag.match(new RegExp(`\\b${k}="([^"]*)"`)) || [])[1];
+    const date = attr("data-date"), level = Number(attr("data-level") || 0), id = attr("id");
+    days.push({ date, level, count: tips.has(id) ? tips.get(id) : level });
+  }
+  return days.sort((a, b) => a.date.localeCompare(b.date));
+}
+function toWeeks(days) {
+  const weeks = []; let cur = null, curKey = null;
+  for (const d of days) {
+    const dt = new Date(d.date + "T00:00:00Z"); dt.setUTCDate(dt.getUTCDate() - dt.getUTCDay());
+    const key = dt.toISOString().slice(0, 10);
+    if (key !== curKey) { cur = []; weeks.push(cur); curKey = key; }
+    cur.push(d);
+  }
+  return weeks;
+}
+async function realData() {
+  const yearsQ = await gql(`query($l:String!){ user(login:$l){ contributionsCollection{ contributionYears } } }`, { l: LOGIN });
+  const years = yearsQ.user.contributionsCollection.contributionYears;
+  const last = await scrapeRange();
+  if (!last.length) throw new Error("calendar page format changed: no days found");
+  const all = new Map();
+  for (const y of years) for (const d of await scrapeRange(`${y}-01-01`, `${y}-12-31`)) all.set(d.date, d.count);
+  for (const d of last) all.set(d.date, d.count);
+  const yearTotal = last.reduce((s, d) => s + d.count, 0);
+  console.log(`last 12 months: ${yearTotal} · days: ${last.length} · years: ${years.join(",")}`);
+  return { weeks: toWeeks(last), yearTotal, allDays: [...all.entries()].sort() };
 }
 function mockData() {
   let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
