@@ -2,7 +2,7 @@
 // Static pieces (header, projects, stack) + data-driven pieces (stats, calango).
 //   node scripts/generate.mjs            -> real data (needs GITHUB_TOKEN)
 //   node scripts/generate.mjs --mock     -> fake data, for local previews
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 
 const LOGIN = process.env.GH_LOGIN || "jsabadell";
 const OUT = new URL("../assets/", import.meta.url);
@@ -94,61 +94,44 @@ function header() {
 </svg>`;
 }
 
-/* ---------------------------------------------------------------- projects */
-const PROJECTS = [
-  { name: "IRKO", kind: "Internship · AI", color: "accent",
-    lines: ["Natural-language assistant over an", "automation portal: ask a question,", "get answers from live dashboard data."],
-    tags: ["LLM agents", "Python", "Postgres"] },
-  { name: "Stadio", kind: "Contract · Full-stack", color: "accent2",
-    lines: ["Professional network for football:", "players, clubs and scouts. Led security", "hardening and closed 6 vulnerabilities."],
-    tags: ["TypeScript", "Next.js", "Supabase"] },
-  { name: "Creme Climbing", kind: "Contract · Full-stack", color: "accent3",
-    lines: ["Manufacturing execution system: from", "production orders all the way to the", "shop floor."],
-    tags: ["React", "FastAPI", "PostgreSQL"] },
+/* -------------------------------------------------------------------- work */
+const WORK = [
+  { name: "IRKO", role: "Software Engineering Intern", when: "Since Sep 2026",
+    lines: ["AI assistant inside IRKO's fiscal and accounting portal. Answers questions", "about live data in plain language, scoped to what each user can see."],
+    stack: "Django · Celery · Next.js · Claude" },
+  { name: "Stadio", role: "Full-Stack Engineer, contract", when: "Since May 2026",
+    lines: ["Sole engineer on a football networking platform. Shipped error monitoring", "and closed 6 auth vulnerabilities across RPCs and edge functions."],
+    stack: "React · TypeScript · Supabase · Sentry" },
+  { name: "Creme Climbing", role: "Full-Stack Engineer, contract", when: "Since Mar 2026",
+    lines: ["Manufacturing execution system built from scratch for a climbing holds", "manufacturer, replacing Excel-based production tracking."],
+    stack: "FastAPI · Next.js · PostgreSQL · Docker" },
 ];
-function chips(tags, x, y, th, mono = true) {
-  let out = "", cx = x;
-  for (const tag of tags) {
-    const w = tag.length * 7.3 + 18;
-    out += `<rect x="${cx}" y="${y}" width="${w}" height="22" rx="11" fill="${th.chip}" stroke="${th.border}"/>
-      <text x="${cx + w / 2}" y="${y + 15}" text-anchor="middle" font-family="${mono ? MONO : SANS}" font-size="12" fill="${th.text}">${esc(tag)}</text>`;
-    cx += w + 6;
-  }
-  return out;
-}
-function projects(th) {
-  const W = 860, H = 212, gap = 18, cw = (W - 2 * gap) / 3;
-  let out = "";
-  PROJECTS.forEach((p, i) => {
-    const x = i * (cw + gap), c = th[p.color];
-    out += `<g>
-      <rect x="${x + 1}" y="1" width="${cw - 2}" height="${H - 2}" rx="12" fill="${th.surface}" stroke="${th.border}"/>
-      <rect x="${x + 1}" y="1" width="${cw - 2}" height="4" rx="2" fill="${c}"/>
-      <text x="${x + 18}" y="32" font-family="${MONO}" font-size="12" fill="${c}">${p.kind}</text>
-      <text x="${x + 18}" y="62" font-family="${SANS}" font-size="20" font-weight="700" fill="${th.text}">${esc(p.name)}</text>
-      ${p.lines.map((l, k) => `<text x="${x + 18}" y="${90 + k * 19}" font-family="${SANS}" font-size="13" fill="${th.muted}">${esc(l)}</text>`).join("")}
-      ${chips(p.tags, x + 18, H - 40, th)}
-    </g>`;
+function work(th) {
+  const W = 880, rowH = 104, H = WORK.length * rowH + 2;
+  let out = `<path d="M0 0.5 H${W}" stroke="${th.border}"/>`;
+  WORK.forEach((w, i) => {
+    const y = i * rowH;
+    out += `<text x="0" y="${y + 34}" font-family="${SANS}" font-size="18" font-weight="700" fill="${th.text}">${esc(w.name)}</text>
+      <text x="0" y="${y + 56}" font-family="${SANS}" font-size="12.5" fill="${th.muted}">${esc(w.role)}</text>
+      <text x="0" y="${y + 74}" font-family="${SANS}" font-size="12.5" fill="${th.muted}">${esc(w.when)}</text>
+      ${w.lines.map((l, k) => `<text x="250" y="${y + 34 + k * 21}" font-family="${SANS}" font-size="14" fill="${th.text}" opacity=".88">${esc(l)}</text>`).join("")}
+      <text x="250" y="${y + 84}" font-family="${MONO}" font-size="12.5" fill="${th.accent}">${esc(w.stack)}</text>
+      <path d="M0 ${y + rowH + 0.5} H${W}" stroke="${th.border}"/>`;
   });
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${out}</svg>`;
 }
 
 /* ------------------------------------------------------------------- stack */
-const STACK = [
-  { title: "Frontend", color: "accent4", items: ["TypeScript", "React", "Next.js", "React Native", "Tailwind"] },
-  { title: "Backend", color: "accent2", items: ["FastAPI", "Python", "Node.js", "REST", "LLM agents"] },
-  { title: "Data", color: "accent", items: ["PostgreSQL", "Supabase", "SQL", "RLS & auth"] },
-  { title: "DevOps", color: "accent3", items: ["Docker", "GitHub Actions", "CI/CD", "Linux"] },
-];
+const ICONS = JSON.parse(readFileSync(new URL("./icons.json", import.meta.url), "utf8"));
 function stack(th) {
-  const W = 860, rowH = 40, H = STACK.length * rowH + 12;
+  const names = Object.keys(ICONS), slot = 880 / names.length, W = 880, H = 74, size = 26;
+  const ink = th === THEMES.dark ? "#c3d1c8" : "#2f3b33";
   let out = "";
-  STACK.forEach((g, i) => {
-    const y = 6 + i * rowH;
-    out += `<circle cx="10" cy="${y + 16}" r="4" fill="${th[g.color]}"/>
-      <text x="24" y="${y + 21}" font-family="${MONO}" font-size="14" fill="${th[g.color]}">${g.title}</text>
-      ${chips(g.items, 130, y + 5, th)}`;
-    if (i < STACK.length - 1) out += `<path d="M24 ${y + rowH - 1} H${W}" stroke="${th.border}" stroke-dasharray="2 4"/>`;
+  names.forEach((n, i) => {
+    const cx = i * slot + slot / 2;
+    out += `<g><title>${esc(n)}</title>
+      <g transform="translate(${(cx - size / 2).toFixed(1)} 6) scale(${size / 24})"><path d="${ICONS[n]}" fill="${ink}"/></g>
+      <text x="${cx.toFixed(1)}" y="${size + 30}" text-anchor="middle" font-family="${SANS}" font-size="11" fill="${th.muted}">${esc(n)}</text></g>`;
   });
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${out}</svg>`;
 }
@@ -239,38 +222,118 @@ function streaks(allDays) {
   return { longest, current: { n: cur, from, to } };
 }
 
-/* ------------------------------------------------------------------- stats */
-const fmtDate = (s) => s ? new Date(s + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : "";
+/* ---------------------------------------------------------------- activity */
 const fmtN = (n) => n.toLocaleString("en-US");
-function stats(th, data) {
-  const W = 860, H = 196, gap = 14, tw = (W - 3 * gap) / 4;
-  const all = data.allDays.reduce((s, [, c]) => s + c, 0);
-  const st = streaks(data.allDays);
-  const firstYear = data.allDays.length ? data.allDays[0][0].slice(0, 4) : "";
-  const tiles = [
-    { label: "All-time", value: fmtN(all), sub: `contributions since ${firstYear}`, c: th.accent },
-    { label: "Last 12 months", value: fmtN(data.yearTotal), sub: "commits, PRs and reviews", c: th.accent4 },
-    { label: "Current streak", value: `${st.current.n}d`, sub: st.current.n ? `${fmtDate(st.current.from)} → ${fmtDate(st.current.to)}` : "starting a new one today", c: th.accent2 },
-    { label: "Longest streak", value: `${st.longest.n}d`, sub: st.longest.n ? `${fmtDate(st.longest.from)} → ${fmtDate(st.longest.to)}` : "", c: th.accent3 },
+function rng(seedStr) {
+  let h = 2166136261; for (const ch of seedStr) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+  return () => { h += 0x6d2b79f5; let t = h; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+// Cubic Bézier helpers for measuring the closed Catmull-Rom loop
+const bez = (p0, c1, c2, p1, t) => { const u = 1 - t; return [
+  u*u*u*p0[0] + 3*u*u*t*c1[0] + 3*u*t*t*c2[0] + t*t*t*p1[0],
+  u*u*u*p0[1] + 3*u*u*t*c1[1] + 3*u*t*t*c2[1] + t*t*t*p1[1]]; };
+function segLen(p0, c1, c2, p1) { let L = 0, prev = p0; for (let k = 1; k <= 40; k++) { const q = bez(p0, c1, c2, p1, k / 40); L += Math.hypot(q[0] - prev[0], q[1] - prev[1]); prev = q; } return L; }
+
+function activity(th, data) {
+  const W = 880, cell = 12, step = 16.2, gx = 6, gy = 104;
+  const cols = data.weeks.length, H = gy + 7 * step + 14;
+  const rand = rng(new Date().toISOString().slice(0, 10) + LOGIN);
+
+  // ---- stats line (typographic, no boxes)
+  const all = data.allDays.reduce((s, [, c]) => s + c, 0), st = streaks(data.allDays);
+  const firstYear = data.allDays.find(([, c]) => c > 0)?.[0].slice(0, 4) ?? "";
+  const items = [
+    [fmtN(data.yearTotal), "contributions in the last year"],
+    [fmtN(all), `contributions since ${firstYear}`],
+    [`${st.longest.n} days`, "longest streak"],
   ];
+  if (st.current.n > 1) items.push([`${st.current.n} days`, "current streak"]);
   let out = "";
-  tiles.forEach((t, i) => {
-    const x = i * (tw + gap);
-    out += `<rect x="${x + 1}" y="1" width="${tw - 2}" height="104" rx="12" fill="${th.surface}" stroke="${th.border}"/>
-      <text x="${x + 16}" y="28" font-family="${MONO}" font-size="12" fill="${t.c}">${t.label}</text>
-      <text x="${x + 16}" y="66" font-family="${SANS}" font-size="30" font-weight="800" fill="${th.text}">${t.value}</text>
-      <text x="${x + 16}" y="90" font-family="${SANS}" font-size="12" fill="${th.muted}">${esc(t.sub)}</text>`;
+  items.forEach(([v, l], i) => {
+    const x = i * 220;
+    out += `<text x="${x}" y="40" font-family="${SANS}" font-size="30" font-weight="700" fill="${th.text}" letter-spacing="-.6">${v}</text>
+      <text x="${x}" y="64" font-family="${SANS}" font-size="12.5" fill="${th.muted}">${esc(l)}</text>`;
   });
-  // weekly bars
-  const wk = data.weeks.map((w) => w.reduce((s, d) => s + d.count, 0));
-  const max = Math.max(1, ...wk), bw = (W - 2) / wk.length, top = 122, bh = 54;
-  out += `<text x="0" y="${top - 2}" font-family="${MONO}" font-size="11" fill="${th.muted}">Contributions per week</text>`;
-  wk.forEach((v, i) => {
-    const h = Math.max(2, (v / max) * (bh - 8));
-    out += `<rect x="${(1 + i * bw + 1).toFixed(1)}" y="${(top + bh - h).toFixed(1)}" width="${(bw - 3).toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="${th.accent}" opacity="${(0.35 + 0.65 * (v / max)).toFixed(2)}"/>`;
-  });
-  out += `<path d="M0 ${top + bh + 0.5} H${W}" stroke="${th.border}"/>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${out}</svg>`;
+
+  // ---- grid
+  const pos = new Map(); const food = [];
+  let base = "";
+  data.weeks.forEach((w, c) => w.forEach((d) => {
+    const r = new Date(d.date + "T00:00:00Z").getUTCDay();
+    const x = gx + c * step, y = gy + r * step;
+    base += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="${th.empty}"/>`;
+    const key = `${c},${r}`;
+    pos.set(key, [x + cell / 2, y + cell / 2]);
+    if (d.level > 0) food.push({ key, x, y, level: d.level });
+  }));
+
+  // ---- wander: hop between nearby contributions, random each day
+  const pool = food.length >= 4 ? food.map((f) => f.key) : [...pos.keys()];
+  const N = Math.min(34, pool.length);
+  const left = new Set(pool);
+  let curKey = pool[Math.floor(rand() * pool.length)]; left.delete(curKey);
+  const route = [curKey];
+  while (route.length < N) {
+    const [cx0, cy0] = pos.get(curKey);
+    const near = [...left].map((k) => [k, Math.hypot(pos.get(k)[0] - cx0, pos.get(k)[1] - cy0)])
+      .sort((a, b) => a[1] - b[1]).slice(0, 5);
+    curKey = near[Math.floor(rand() * near.length)][0]; left.delete(curKey); route.push(curKey);
+  }
+  const P = route.map((k) => pos.get(k)), n = P.length;
+  let d = `M${P[0][0].toFixed(1)},${P[0][1].toFixed(1)}`; const lens = [];
+  for (let i = 0; i < n; i++) {
+    const p0 = P[(i - 1 + n) % n], p1 = P[i], p2 = P[(i + 1) % n], p3 = P[(i + 2) % n];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1.map((v) => v.toFixed(1)).join(",")} ${c2.map((v) => v.toFixed(1)).join(",")} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+    lens.push(segLen(p1, c1, c2, p2));
+  }
+  const total = lens.reduce((a, b) => a + b, 0), speed = 52;
+  // timeline: pause at each stop, then glide (ease in/out) to the next one
+  const kT = [0], kP = [0], splines = []; let t = 0, acc = 0; const arrive = [];
+  for (let i = 0; i < n; i++) {
+    const pause = 0.5 + rand() * 1.1;
+    arrive.push(t);
+    t += pause; kT.push(t); kP.push(acc / total); splines.push("0 0 1 1");
+    acc += lens[i]; t += Math.max(0.6, lens[i] / speed);
+    kT.push(t); kP.push(Math.min(1, acc / total)); splines.push(".42 0 .58 1");
+  }
+  const T = t;
+  const regrow = 14; // seconds a cell stays eaten
+  const eatAt = new Map(route.map((k, i) => [k, arrive[i] + 0.25]));
+
+  let foodSvg = "";
+  for (const f of food) {
+    const at = eatAt.get(f.key);
+    foodSvg += `<rect${at !== undefined ? ` class="f" style="animation-delay:${at.toFixed(2)}s"` : ""} x="${f.x}" y="${f.y}" width="${cell}" height="${cell}" rx="3" fill="${th.levels[f.level - 1]}"/>`;
+  }
+  const pc = (s) => ((s / T) * 100).toFixed(3);
+  const skin = th === THEMES.dark ? ["#a3e635", "#2dd4bf", "#f59e0b"] : ["#65a30d", "#0f766e", "#b45309"];
+  const spot = th === THEMES.dark ? "#3f6212" : "#1a2e05";
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H.toFixed(0)}" viewBox="0 0 ${W} ${H.toFixed(0)}">
+  <style>
+    .f{transform-box:fill-box;transform-origin:center;animation:eat ${T.toFixed(2)}s infinite}
+    @keyframes eat{0%{transform:scale(1);opacity:1;animation-timing-function:ease-in}${pc(0.25)}%{transform:scale(1.25);opacity:1;animation-timing-function:ease-in}${pc(0.6)}%{transform:scale(0);opacity:0}${pc(regrow)}%{transform:scale(0);opacity:0;animation-timing-function:ease-out}${pc(regrow + 1.2)}%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:1}}
+    .skin{animation:cham 12s ease-in-out infinite}
+    .leg{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:chamS 12s ease-in-out infinite}
+    @keyframes cham{0%,100%{fill:${skin[0]}}33%{fill:${skin[1]}}66%{fill:${skin[2]}}}
+    @keyframes chamS{0%,100%{stroke:${skin[0]}}33%{stroke:${skin[1]}}66%{stroke:${skin[2]}}}
+    .spot{fill:${spot};opacity:.5}
+    .legA{animation:stepA .45s ease-in-out infinite alternate;transform-origin:-7px 0}
+    .legB{animation:stepA .45s ease-in-out infinite alternate-reverse;transform-origin:-7px 0}
+    @keyframes stepA{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+    .tongue{fill:none;stroke:#fb7185;stroke-width:1.4;stroke-linecap:round;transform-origin:6px 0;animation:flick 1.9s ease-out infinite}
+    @keyframes flick{0%,70%{transform:scaleX(0)}80%{transform:scaleX(1)}90%,100%{transform:scaleX(0)}}
+  </style>
+  ${out}${base}${foodSvg}
+  <g>
+    <animateMotion dur="${T.toFixed(2)}s" repeatCount="indefinite" rotate="auto" calcMode="spline"
+      keyTimes="${kT.map((x) => (x / T).toFixed(5)).join(";")}" keyPoints="${kP.map((x) => x.toFixed(5)).join(";")}"
+      keySplines="${splines.join(";")}" path="${d}"/>
+    ${lizard()}
+  </g>
+</svg>`;
 }
 
 /* ----------------------------------------------------------------- calango */
@@ -289,80 +352,15 @@ function lizard() {
     <path class="tongue" d="M6,0 H13 M13,0 L15.5,-1.6 M13,0 L15.5,1.6"/>
   </g>`;
 }
-function calango(th, data) {
-  const cell = 12, step = 15.5, gx = 20, gy = 22;
-  const cols = data.weeks.length, rows = 7;
-  const W = gx * 2 + cols * step, H = gy + rows * step + 18;
-  const dt = 0.05, turn = 0.32, exit = 0.8;
-  const cx = (c) => gx + c * step + cell / 2, cy = (r) => gy + r * step + cell / 2;
-
-  // lizard timeline: [time, x, y, angle]
-  const kf = []; const eatAt = new Map(); let t = 0;
-  kf.push([0, cx(0) - 50, cy(0), 0]); t = 0.6;
-  for (let r = 0; r < rows; r++) {
-    const ltr = r % 2 === 0, ang = ltr ? 0 : 180;
-    const c0 = ltr ? 0 : cols - 1, c1 = ltr ? cols - 1 : 0;
-    kf.push([t, cx(c0), cy(r), ang]);
-    for (let k = 0; k < cols; k++) eatAt.set(`${ltr ? k : cols - 1 - k},${r}`, t + k * dt);
-    t += (cols - 1) * dt;
-    kf.push([t, cx(c1), cy(r), ang]);
-    if (r < rows - 1) { t += turn / 2; kf.push([t, cx(c1) + (ltr ? 8 : -8), cy(r) + step / 2, 90]); t += turn / 2; }
-  }
-  t += exit; kf.push([t, cx(cols - 1) + 60, cy(rows - 1), 0]);
-  t += 0.6; const T = t;
-  const pct = (x) => ((x / T) * 100).toFixed(3);
-  let lzKf = kf.map(([tt, x, y, a]) => `${pct(tt)}%{transform:translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${a}deg)}`).join("");
-  lzKf += `100%{transform:translate(${(cx(0) - 50).toFixed(1)}px,${cy(0).toFixed(1)}px) rotate(0deg)}`;
-
-  // cells
-  let base = "", food = "";
-  data.weeks.forEach((w, c) => w.forEach((d, i) => {
-    const r = new Date(d.date + "T00:00:00Z").getUTCDay(); void i;
-    const x = gx + c * step, y = gy + r * step;
-    base += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="2.5" fill="${th.empty}"/>`;
-    if (d.level > 0) {
-      const at = eatAt.get(`${c},${r}`) - 0.02;
-      food += `<rect class="f" style="animation-delay:${at.toFixed(2)}s" x="${x}" y="${y}" width="${cell}" height="${cell}" rx="2.5" fill="${th.levels[d.level - 1]}"/>`;
-    }
-  }));
-  const skin = th === THEMES.dark ? ["#a3e635", "#2dd4bf", "#f59e0b", "#a3e635"] : ["#65a30d", "#0f766e", "#b45309", "#65a30d"];
-  const spot = th === THEMES.dark ? "#3f6212" : "#1a2e05";
-  const gone = 55, back = 62; // % of the loop a cell stays eaten before regrowing
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W.toFixed(0)}" height="${H.toFixed(0)}" viewBox="0 0 ${W.toFixed(0)} ${H.toFixed(0)}">
-  <style>
-    .f{transform-box:fill-box;transform-origin:center;animation:eat ${T.toFixed(2)}s linear infinite}
-    @keyframes eat{0%{transform:scale(1);opacity:1}0.6%{transform:scale(1.35);opacity:1}1.6%{transform:scale(0);opacity:0}${gone}%{transform:scale(0);opacity:0}${back}%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:1}}
-    .walker{animation:walk ${T.toFixed(2)}s linear infinite}
-    @keyframes walk{${lzKf}}
-    .skin{animation:chameleon 7s ease-in-out infinite}
-    .leg{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:chameleonS 7s ease-in-out infinite}
-    @keyframes chameleon{0%{fill:${skin[0]}}33%{fill:${skin[1]}}66%{fill:${skin[2]}}100%{fill:${skin[3]}}}
-    @keyframes chameleonS{0%{stroke:${skin[0]}}33%{stroke:${skin[1]}}66%{stroke:${skin[2]}}100%{stroke:${skin[3]}}}
-    .spot{fill:${spot};opacity:.55}
-    .legA{animation:stepA .22s ease-in-out infinite alternate;transform-origin:-7px 0}
-    .legB{animation:stepA .22s ease-in-out infinite alternate-reverse;transform-origin:-7px 0}
-    @keyframes stepA{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
-    .tongue{fill:none;stroke:#fb7185;stroke-width:1.4;stroke-linecap:round;transform-origin:6px 0;animation:flick .7s ease-out infinite}
-    @keyframes flick{0%,55%{transform:scaleX(0)}70%{transform:scaleX(1)}85%,100%{transform:scaleX(0)}}
-  </style>
-  ${base}${food}
-  <g class="walker">${lizard()}</g>
-</svg>`;
-}
-
 /* -------------------------------------------------------------------- main */
 const mock = process.argv.includes("--mock");
 save("header.svg", header());
 for (const [name, th] of Object.entries(THEMES)) {
-  save(`projects-${name}.svg`, projects(th));
+  save(`work-${name}.svg`, work(th));
   save(`stack-${name}.svg`, stack(th));
 }
-if (mock || (process.env.PROFILE_TOKEN || process.env.GITHUB_TOKEN)) {
+if (mock || process.env.PROFILE_TOKEN || process.env.GITHUB_TOKEN) {
   const data = mock ? mockData() : await realData();
-  for (const [name, th] of Object.entries(THEMES)) {
-    save(`stats-${name}.svg`, stats(th, data));
-    save(`calango-${name}.svg`, calango(th, data));
-  }
+  for (const [name, th] of Object.entries(THEMES)) save(`activity-${name}.svg`, activity(th, data));
   console.log("generated with", mock ? "mock" : "live", "data");
-} else console.log("static assets only (no GITHUB_TOKEN)");
+} else console.log("static assets only (no token)");
