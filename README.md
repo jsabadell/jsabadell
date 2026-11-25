@@ -2,7 +2,13 @@
   <img src="assets/header.svg" alt="Jordi Sabadell, full-stack software engineer" width="100%"/>
 </p>
 
-Full-stack engineer and Software Engineering student at Fontys. I build products end to end, from the data model to the interface, and lately a lot of it involves LLMs and agents.
+<p align="center">
+  <a href="https://www.linkedin.com/in/jordisabadell">LinkedIn</a> &nbsp;·&nbsp; <a href="https://github.com/jsabadell?tab=repositories">Repositories</a>
+</p>
+
+Full-stack engineer, Brazilian and Spanish, studying Software Engineering at **Fontys** in the Netherlands and living in Barcelona. I work as a contractor on two products, **Stadio** and **Creme Climbing**, and I'm currently interning at **IRKO**, building an AI assistant that answers questions about fiscal and accounting data.
+
+I like owning a product end to end: the data model, the API, the interface and the pipeline that ships it. Lately most of my work involves LLMs and agents, and making sure the answers they give can actually be trusted.
 
 ### Work
 
