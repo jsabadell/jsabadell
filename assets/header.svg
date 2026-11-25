@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="322" viewBox="0 0 860 322" font-family="ui-monospace,'JetBrains Mono','Cascadia Code','Fira Code',SFMono-Regular,Menlo,Consolas,monospace" font-size="15">
+  <defs><clipPath id="c0"><rect x="32" y="58" height="30" width="117.7">
+      <animate attributeName="width" begin="0.60s" dur="0.42s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0" calcMode="discrete" fill="freeze"/></rect></clipPath><clipPath id="c1"><rect x="32" y="112" height="30" width="117.7">
+      <animate attributeName="width" begin="1.82s" dur="0.91s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0;181.0;190.1;199.1;208.2;217.2;226.3;235.3" calcMode="discrete" fill="freeze"/></rect></clipPath><clipPath id="c2"><rect x="32" y="166" height="30" width="117.7">
+      <animate attributeName="width" begin="3.53s" dur="1.12s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0;181.0;190.1;199.1;208.2;217.2;226.3;235.3;244.4;253.4;262.5" calcMode="discrete" fill="freeze"/></rect></clipPath><clipPath id="c3"><rect x="32" y="220" height="30" width="117.7">
+      <animate attributeName="width" begin="5.45s" dur="0.98s" values="117.7;126.7;135.8;144.8;153.9;162.9;172.0;181.0;190.1;199.1;208.2;217.2;226.3;235.3;244.4" calcMode="discrete" fill="freeze"/></rect></clipPath>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a3e635" stop-opacity=".18"/><stop offset=".5" stop-color="#2dd4bf" stop-opacity=".06"/><stop offset="1" stop-color="#fb7185" stop-opacity=".14"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="858" height="320" rx="14" fill="#0b100d" stroke="url(#glow)" stroke-width="2"/>
+  <rect x="1" y="1" width="858" height="320" rx="14" fill="url(#glow)" opacity=".35"/>
+  <path d="M1 44 H859" stroke="#1d2a22"/>
+  <circle cx="26" cy="23" r="5.5" fill="#fb7185"/><circle cx="44" cy="23" r="5.5" fill="#f59e0b"/><circle cx="62" cy="23" r="5.5" fill="#a3e635"/>
+  <text x="430" y="28" text-anchor="middle" fill="#5f7568" font-size="13">jordi@bcn — zsh — 120×32</text>
+  <g opacity="0"><set attributeName="opacity" to="1" begin="0.59s" fill="freeze"/>
+      <text x="32" y="78" clip-path="url(#c0)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">whoami</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="1.37s" fill="freeze"/>
+        <text x="32" y="105"><tspan fill="#e6efe8" font-weight="700">Jordi</tspan><tspan fill="#c9d6cd"> · full-stack software engineer</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="1.81s" fill="freeze"/>
+      <text x="32" y="132" clip-path="url(#c1)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">cat stack.txt</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="3.08s" fill="freeze"/>
+        <text x="32" y="159"><tspan fill="#f59e0b">typescript · react · next.js · fastapi · postgres · supabase</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="3.52s" fill="freeze"/>
+      <text x="32" y="186" clip-path="url(#c2)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">traceroute jordi</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="5.00s" fill="freeze"/>
+        <text x="32" y="213"><tspan fill="#a3e635">brazil</tspan><tspan fill="#5f7568"> (roots) </tspan><tspan fill="#5f7568">──▶ </tspan><tspan fill="#f59e0b">netherlands</tspan><tspan fill="#5f7568"> (fontys) </tspan><tspan fill="#5f7568">──▶ </tspan><tspan fill="#fb7185">barcelona</tspan><tspan fill="#5f7568"> (home base)</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="5.44s" fill="freeze"/>
+      <text x="32" y="240" clip-path="url(#c3)"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan><tspan fill="#e6efe8">./status --now</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="6.78s" fill="freeze"/>
+        <text x="32" y="267"><tspan fill="#2dd4bf">shipping AI assistants, a MES and a football network</tspan></text></g><g opacity="0"><set attributeName="opacity" to="1" begin="7.23s" fill="freeze"/>
+    <text x="32" y="294"><tspan fill="#a3e635">jordi</tspan><tspan fill="#8aa293">@</tspan><tspan fill="#2dd4bf">bcn</tspan><tspan fill="#8aa293">:~$ </tspan></text>
+    <rect x="151.65" y="280" width="9" height="18" fill="#a3e635">
+      <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.5;1" dur="1s" repeatCount="indefinite"/></rect></g>
+</svg>
