@@ -137,13 +137,13 @@ function work(th) {
 
 /* ------------------------------------------------------------------- stack */
 const STACK = [
-  { title: "FRONTEND", color: "accent4", items: ["TypeScript", "React", "Next.js", "Tailwind", "Vite", "Expo"] },
-  { title: "BACKEND", color: "accent2", items: ["Python", "FastAPI", "Django", "Celery", "Redis"] },
-  { title: "DATA & AI", color: "accent", items: ["PostgreSQL", "Supabase", "Claude"] },
-  { title: "INFRA", color: "accent3", items: ["Docker", "GitHub Actions", "Sentry", "Linux"] },
+  { title: "FRONTEND", color: "accent4", items: ["TypeScript", "JavaScript", "React", "Next.js", "HTML", "CSS", "Tailwind", "Expo"] },
+  { title: "BACKEND", color: "accent2", items: ["Python", "Java", "FastAPI", "Django", "Celery", "Redis"] },
+  { title: "DATA & AI", color: "accent", items: ["PostgreSQL", "SQL", "Supabase", "Claude"] },
+  { title: "INFRA & TOOLS", color: "accent3", items: ["Docker", "GitHub Actions", "Railway", "Sentry", "Linux", "Vite", "Figma"] },
 ];
 function stack(th) {
-  const W = 880, gw = 212, gap = (W - 4 * gw) / 3, tw = 102, th_ = 38, rows = 3;
+  const W = 880, gw = 212, gap = (W - 4 * gw) / 3, tw = 102, th_ = 38, rows = Math.max(...STACK.map((g) => Math.ceil(g.items.length / 2)));
   const H = 30 + rows * (th_ + 8);
   let out = "";
   STACK.forEach((g, gi) => {
