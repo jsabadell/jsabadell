@@ -31,4 +31,4 @@ I like owning a product end to end: the data model, the API, the interface and t
   <img src="assets/activity-light.svg" alt="contribution stats and a calango lizard eating my contribution graph" width="100%"/>
 </picture>
 
-<sub>🦎 That's a <b>calango</b>, a small Brazilian lizard. It eats my contribution graph every day.</sub>
+<sub>🦎 That's a <b>calango</b>, a small Brazilian lizard. It eats my contribution graph every day ;).</sub>
