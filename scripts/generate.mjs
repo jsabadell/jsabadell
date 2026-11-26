@@ -54,15 +54,18 @@ function header() {
   // route: three stops joined by a line with a travelling dot
   const stops = [
     { name: "Brazil", note: "roots", c: "#a3e635" },
-    { name: "Netherlands", note: "Fontys, Software Engineering", c: "#f59e0b" },
-    { name: "Barcelona", note: "home base", c: "#fb7185" },
+    { name: "Netherlands", note: "BSc at Fontys", c: "#f59e0b" },
+    { name: "Barcelona", note: "IT minor at FIB", c: "#fb7185" },
+    { name: "São Paulo", note: "now, interning at IRKO", c: "#2dd4bf", now: true },
   ];
-  const ry = 232, rx0 = px + 6, rgap = 230;
-  let route = `<path d="M${rx0} ${ry} H${rx0 + 2 * rgap}" stroke="#2a3a30" stroke-width="2" stroke-dasharray="3 5"/>
-    <circle r="3.5" fill="#e6efe8"><animate attributeName="cx" values="${rx0};${rx0 + 2 * rgap}" dur="5s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="5s" repeatCount="indefinite"/><set attributeName="cy" to="${ry}"/></circle>`;
+  const ry = 232, rx0 = px + 6, rgap = 168;
+  let route = `<path d="M${rx0} ${ry} H${rx0 + 3 * rgap}" stroke="#2a3a30" stroke-width="2" stroke-dasharray="3 5"/>
+    <circle r="3.5" fill="#e6efe8"><animate attributeName="cx" values="${rx0};${rx0 + 3 * rgap}" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="6s" repeatCount="indefinite"/><set attributeName="cy" to="${ry}"/></circle>`;
   stops.forEach((s, i) => {
     const x = rx0 + i * rgap;
+    if (s.now) route += `<circle cx="${x}" cy="${ry}" r="6" fill="none" stroke="${s.c}" stroke-width="1.5">
+      <animate attributeName="r" values="6;16" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="2s" repeatCount="indefinite"/></circle>`;
     route += `<circle cx="${x}" cy="${ry}" r="9" fill="${s.c}" opacity=".18"/><circle cx="${x}" cy="${ry}" r="5" fill="${s.c}"/>
       <text x="${x - 6}" y="${ry + 30}" font-family="${SANS}" font-size="15" font-weight="700" fill="#e6efe8">${s.name}</text>
       <text x="${x - 6}" y="${ry + 49}" font-family="${SANS}" font-size="12.5" fill="#7d9586">${esc(s.note)}</text>`;
@@ -90,7 +93,7 @@ function header() {
     <text x="${px}" y="${py}" fill="#6f8578">${prefix}</text>${rot}
   </g>
   ${route}
-  <g transform="translate(735 150) rotate(-30) scale(3.1)"><g class="bob">${lizard()}</g></g>
+  <g transform="translate(770 128) rotate(-30) scale(2.8)"><g class="bob">${lizard()}</g></g>
 </svg>`;
 }
 

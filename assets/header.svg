@@ -23,16 +23,19 @@
   <g font-family="ui-monospace,'JetBrains Mono','Cascadia Code','Fira Code',SFMono-Regular,Menlo,Consolas,monospace" font-size="16">
     <text x="56" y="172" fill="#6f8578">Currently building </text><text x="238.4" y="172" fill="#a3e635" clip-path="url(#r0)">AI assistants over live data</text><text x="238.4" y="172" fill="#f59e0b" clip-path="url(#r1)">a manufacturing execution system</text><text x="238.4" y="172" fill="#fb7185" clip-path="url(#r2)">a professional network for football</text>
   </g>
-  <path d="M62 232 H522" stroke="#2a3a30" stroke-width="2" stroke-dasharray="3 5"/>
-    <circle r="3.5" fill="#e6efe8"><animate attributeName="cx" values="62;522" dur="5s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="5s" repeatCount="indefinite"/><set attributeName="cy" to="232"/></circle><circle cx="62" cy="232" r="9" fill="#a3e635" opacity=".18"/><circle cx="62" cy="232" r="5" fill="#a3e635"/>
+  <path d="M62 232 H566" stroke="#2a3a30" stroke-width="2" stroke-dasharray="3 5"/>
+    <circle r="3.5" fill="#e6efe8"><animate attributeName="cx" values="62;566" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.9;1" dur="6s" repeatCount="indefinite"/><set attributeName="cy" to="232"/></circle><circle cx="62" cy="232" r="9" fill="#a3e635" opacity=".18"/><circle cx="62" cy="232" r="5" fill="#a3e635"/>
       <text x="56" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Brazil</text>
-      <text x="56" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">roots</text><circle cx="292" cy="232" r="9" fill="#f59e0b" opacity=".18"/><circle cx="292" cy="232" r="5" fill="#f59e0b"/>
-      <text x="286" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Netherlands</text>
-      <text x="286" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">Fontys, Software Engineering</text><circle cx="522" cy="232" r="9" fill="#fb7185" opacity=".18"/><circle cx="522" cy="232" r="5" fill="#fb7185"/>
-      <text x="516" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Barcelona</text>
-      <text x="516" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">home base</text>
-  <g transform="translate(735 150) rotate(-30) scale(3.1)"><g class="bob"><g class="lz" transform="scale(1.35)">
+      <text x="56" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">roots</text><circle cx="230" cy="232" r="9" fill="#f59e0b" opacity=".18"/><circle cx="230" cy="232" r="5" fill="#f59e0b"/>
+      <text x="224" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Netherlands</text>
+      <text x="224" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">BSc at Fontys</text><circle cx="398" cy="232" r="9" fill="#fb7185" opacity=".18"/><circle cx="398" cy="232" r="5" fill="#fb7185"/>
+      <text x="392" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">Barcelona</text>
+      <text x="392" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">IT minor at FIB</text><circle cx="566" cy="232" r="6" fill="none" stroke="#2dd4bf" stroke-width="1.5">
+      <animate attributeName="r" values="6;16" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="2s" repeatCount="indefinite"/></circle><circle cx="566" cy="232" r="9" fill="#2dd4bf" opacity=".18"/><circle cx="566" cy="232" r="5" fill="#2dd4bf"/>
+      <text x="560" y="262" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#e6efe8">São Paulo</text>
+      <text x="560" y="281" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="12.5" fill="#7d9586">now, interning at IRKO</text>
+  <g transform="translate(770 128) rotate(-30) scale(2.8)"><g class="bob"><g class="lz" transform="scale(1.35)">
     <path class="skin" d="M-13,-2.2 Q-24,-3.5 -38,1.5 Q-25,0.8 -13,2.2 Z"/>
     <g class="legA"><path class="leg" d="M-3,-2.5 L-1,-7.5 L1.5,-8.5"/><path class="leg" d="M-11,2.5 L-14,7.5 L-16.5,8.5"/></g>
     <g class="legB"><path class="leg" d="M-3,2.5 L-1,7.5 L1.5,8.5"/><path class="leg" d="M-11,-2.5 L-14,-7.5 L-16.5,-8.5"/></g>
